@@ -583,6 +583,12 @@
      */
     const CONFIG_API_URL = '';
 
+    // 各角色專屬集點印章圖片設定（檔名需與上傳至 GitHub 的圖片一致；留空則使用預設手繪印章）
+    const STAMP_IMAGE_CONFIG = {
+      'あやの': 'ayano.jpg',
+      'あきと': '' // 之後上傳圖檔後，在此填入檔名（例如 'akito.jpg'）即可自動套用
+    };
+
     // LocalStorage 儲存鍵名
     const STORAGE_KEYS = {
       API_URL: 'couple_stamp_api_url',
@@ -1185,6 +1191,11 @@
       document.getElementById('stamp-points-big').textContent = pts;
       document.getElementById('stamp-points-denom').textContent =' 點';
 
+      // 依據目前登入者暱稱判斷是否套用專屬圖片印章
+      const userName = (d.me.display_name || '').trim();
+      const matchedKey = Object.keys(STAMP_IMAGE_CONFIG).find(k => userName.includes(k));
+      const customStampImg = matchedKey ? STAMP_IMAGE_CONFIG[matchedKey] : '';
+
       // 生成 10 格集點格：只有已蓋章的印章有色彩（單一視覺焦點）
       const tilts = [-7, 5, -4, 7, -6, 4, -8, 6, -5, 8];
       const gridEl = document.getElementById('stamp-grid');
@@ -1195,13 +1206,16 @@
           const isTerracotta = i % 2 === 0;
           const color = isTerracotta ? '#D67754' : '#6F823E';
           const tilt = tilts[i % tilts.length];
-          html += `
-            <div class="stamp-slot-filled" style="--tilt: ${tilt}deg; transform: rotate(${tilt}deg);" title="第 ${slotNumber} 點已達成">
-              <svg class="w-[50px] h-[50px]" viewBox="0 0 60 60" fill="none">
+          const stampInner = customStampImg
+            ? `<img src="${escapeHtml(customStampImg)}" alt="印章" class="w-[50px] h-[50px] rounded-full object-cover" />`
+            : `<svg class="w-[50px] h-[50px]" viewBox="0 0 60 60" fill="none">
                 <circle cx="30" cy="30" r="25" stroke="${color}" stroke-width="2.4" stroke-dasharray="60 3 40 2" opacity="0.92" />
                 <circle cx="30" cy="30" r="20.5" stroke="${color}" stroke-width="1.2" opacity="0.7" />
                 <path d="M21 30.5l6.2 6.2 12.8-13.4" stroke="${color}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
+              </svg>`;
+          html += `
+            <div class="stamp-slot-filled" style="--tilt: ${tilt}deg; transform: rotate(${tilt}deg);" title="第 ${slotNumber} 點已達成">
+              ${stampInner}
             </div>`;
         } else {
           html += `<div class="stamp-slot-empty">${slotNumber}</div>`;
