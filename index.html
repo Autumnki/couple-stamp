@@ -423,7 +423,7 @@
           <div>
             <div class="flex items-center justify-between mb-3">
               <h4 class="text-base font-bold text-ink">專屬獎勵兌換</h4>
-              <span id="rewards-setter-hint" class="text-xs text-inkLight">由另一半設定</span>
+              <span id="rewards-setter-hint" style="display: none;" class="text-xs text-inkLight">由另一半設定</span>
             </div>
             <div id="my-rewards-list" class="space-y-3"></div>
           </div>
@@ -1181,9 +1181,9 @@
       const startIndex = (page - 1) * 10;
       const filledInThisCard = Math.max(0, Math.min(10, pts - startIndex));
 
-      document.getElementById('stamp-card-page-label').textContent = `第 ${page} 張集點卡（每張 10 格）`;
+      document.getElementById('stamp-card-page-label').textContent ='';
       document.getElementById('stamp-points-big').textContent = pts;
-      document.getElementById('stamp-points-denom').textContent = `/ ${totalPages * 10} 點`;
+      document.getElementById('stamp-points-denom').textContent =' 點';
 
       // 生成 10 格集點格：只有已蓋章的印章有色彩（單一視覺焦點）
       const tilts = [-7, 5, -4, 7, -6, 4, -8, 6, -5, 8];
