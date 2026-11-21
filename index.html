@@ -1,0 +1,1800 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#EFE8DC" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="雙人集章手帳" />
+  <title>雙人集章手帳｜Couple Stamp Journal</title>
+
+  <!-- 圓潤親切的日系圓體與繁體中文無襯線字體 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            paper: '#EFE8DC',
+            card: '#FAF7F0',
+            mutedFill: '#E2DBD0',
+            matcha: '#6F823E',
+            matchaSoft: '#A3B17B',
+            terracotta: '#D67754',
+            terracottaSoft: '#E8A68B',
+            ink: '#2C2623',
+            inkLight: '#7A726B',
+            shadowWarm: '#D5CEC2'
+          },
+          fontFamily: {
+            sans: ['"Zen Maru Gothic"', '"Noto Sans TC"', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    /* ================= 日系簡約手繪手帳風核心樣式 ================= */
+    :root {
+      --bg-paper: #EFE8DC;
+      --bg-card: #FAF7F0;
+      --bg-muted: #E2DBD0;
+      --color-matcha: #6F823E;
+      --color-matcha-soft: #A3B17B;
+      --color-terracotta: #D67754;
+      --color-ink: #2C2623;
+      --color-ink-light: #7A726B;
+      --shadow-warm: #D5CEC2;
+    }
+
+    * {
+      -webkit-tap-highlight-color: transparent;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-paper);
+      color: var(--color-ink);
+      font-family: 'Zen Maru Gothic', 'Noto Sans TC', sans-serif;
+      min-height: 100dvh;
+      overflow-x: hidden;
+    }
+
+    /* 極輕微的暖紙張纖維紋理（純輕量 SVG 雜訊，不影響效能） */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.35;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.14'/%3E%3C/svg%3E");
+    }
+
+    /* 手繪感不規則細邊框卡片 + 扁平暖色偏移陰影 */
+    .journal-card {
+      background-color: var(--bg-card);
+      border: 1.5px solid var(--color-ink);
+      border-radius: 14px 17px 15px 16px / 16px 14px 17px 15px;
+      box-shadow: 3px 3px 0px var(--shadow-warm);
+    }
+
+    .journal-card-alt {
+      background-color: var(--bg-card);
+      border: 1.5px solid var(--color-ink);
+      border-radius: 17px 14px 16px 15px / 15px 17px 14px 16px;
+      box-shadow: 3px 3px 0px var(--shadow-warm);
+    }
+
+    /* 手繪感按鈕與按壓微位移回饋 */
+    .btn-hand {
+      border: 1.5px solid var(--color-ink);
+      border-radius: 11px 13px 12px 11px / 12px 11px 13px 12px;
+      transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.15s ease;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-weight: 700;
+    }
+
+    .btn-primary {
+      background-color: var(--color-matcha);
+      color: var(--bg-card);
+      box-shadow: 2px 2px 0px var(--color-ink);
+    }
+    .btn-primary:active:not(:disabled) {
+      transform: translate(2px, 2px);
+      box-shadow: 0px 0px 0px var(--color-ink);
+    }
+
+    .btn-accent {
+      background-color: var(--color-terracotta);
+      color: var(--bg-card);
+      box-shadow: 2px 2px 0px var(--color-ink);
+    }
+    .btn-accent:active:not(:disabled) {
+      transform: translate(2px, 2px);
+      box-shadow: 0px 0px 0px var(--color-ink);
+    }
+
+    .btn-outline {
+      background-color: var(--bg-card);
+      color: var(--color-ink);
+      box-shadow: 2px 2px 0px var(--shadow-warm);
+    }
+    .btn-outline:active:not(:disabled) {
+      transform: translate(2px, 2px);
+      box-shadow: 0px 0px 0px var(--shadow-warm);
+    }
+
+    .btn-outline-accent {
+      background-color: var(--bg-card);
+      color: var(--color-terracotta);
+      border-color: var(--color-terracotta);
+      box-shadow: 2px 2px 0px var(--shadow-warm);
+    }
+    .btn-outline-accent:active:not(:disabled) {
+      transform: translate(2px, 2px);
+      box-shadow: 0px 0px 0px var(--shadow-warm);
+    }
+
+    .btn-hand:disabled {
+      background-color: var(--bg-muted);
+      color: var(--color-ink-light);
+      border-color: var(--color-ink-light);
+      box-shadow: none;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* 手繪輸入框 */
+    .journal-input {
+      width: 100%;
+      background-color: var(--bg-paper);
+      border: 1.5px solid var(--color-ink);
+      border-radius: 10px 12px 11px 10px / 11px 10px 12px 11px;
+      padding: 10px 14px;
+      color: var(--color-ink);
+      outline: none;
+      transition: background-color 0.15s ease;
+    }
+    .journal-input:focus {
+      background-color: var(--bg-card);
+      box-shadow: 2px 2px 0px var(--color-matcha-soft);
+    }
+    .journal-input::placeholder {
+      color: var(--color-ink-light);
+    }
+
+    /* 集點卡上方極簡素色紙膠帶（全頁唯一克制點綴） */
+    .masking-tape {
+      position: absolute;
+      top: -11px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-1.8deg);
+      width: 88px;
+      height: 22px;
+      background-color: rgba(163, 177, 123, 0.45);
+      border-left: 1px dashed rgba(44, 38, 35, 0.25);
+      border-right: 1px dashed rgba(44, 38, 35, 0.25);
+      pointer-events: none;
+    }
+
+    /* 集點卡未蓋章虛線圓框 */
+    .stamp-slot-empty {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: 1.5px dashed var(--color-ink-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-ink-light);
+      font-size: 0.78rem;
+      font-weight: 500;
+      background: transparent;
+    }
+
+    /* 已蓋章印章微動畫與印泥質感 */
+    .stamp-slot-filled {
+      width: 52px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: stampPop 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    @keyframes stampPop {
+      0% { transform: scale(1.35) rotate(-12deg); opacity: 0.2; }
+      100% { transform: scale(1) rotate(var(--tilt, -5deg)); opacity: 1; }
+    }
+
+    /* 開關 Switch (手繪極簡風) */
+    .toggle-track {
+      width: 44px;
+      height: 24px;
+      border-radius: 999px;
+      border: 1.5px solid var(--color-ink);
+      background-color: var(--bg-muted);
+      position: relative;
+      transition: background-color 0.2s ease;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .toggle-track.active {
+      background-color: var(--color-matcha);
+    }
+    .toggle-thumb {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background-color: var(--bg-card);
+      border: 1.5px solid var(--color-ink);
+      position: absolute;
+      top: 2.5px;
+      left: 3px;
+      transition: transform 0.2s ease;
+    }
+    .toggle-track.active .toggle-thumb {
+      transform: translateX(19px);
+    }
+
+    /* 底部安全區域留白 */
+    .safe-bottom {
+      padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+    }
+
+    /* 載入旋轉動畫 */
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .animate-spin-slow {
+      animation: spin 1s linear infinite;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ================= 頂部 Toast 提示訊息 ================= -->
+  <div id="toast-container" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-[400px] pointer-events-none flex flex-col gap-2"></div>
+
+  <!-- ================= 全域讀取遮罩（API 請求時顯示） ================= -->
+  <div id="loading-overlay" class="fixed inset-0 z-50 hidden items-center justify-center bg-paper/70">
+    <div class="journal-card px-5 py-3 flex items-center gap-3">
+      <svg class="w-5 h-5 text-matcha animate-spin-slow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+        <path d="M12 3a9 9 0 1 0 9 9" />
+      </svg>
+      <span id="loading-text" class="text-sm font-bold text-ink">資料同步中…</span>
+    </div>
+  </div>
+
+  <!-- ================= 手機優先主容器 ================= -->
+  <div id="app-shell" class="relative z-10 mx-auto w-full max-w-[440px] min-h-[100dvh] flex flex-col">
+
+    <!-- ==================== 畫面 A：首次登入 / 身分驗證 ==================== -->
+    <main id="screen-login" class="hidden flex-1 flex flex-col justify-center px-5 py-10">
+      <div class="text-center mb-8">
+        <div class="inline-flex items-center justify-center w-14 h-14 mb-3 journal-card bg-card">
+          <!-- 極簡手繪印章圖示 -->
+          <svg class="w-8 h-8 text-matcha" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 20h14" />
+            <path d="M7 16h10l-1-3H8l-1 3Z" />
+            <path d="M10 13V9a2 2 0 1 1 4 0v4" />
+          </svg>
+        </div>
+        <h1 class="text-2xl font-bold tracking-wide text-ink">雙人集章手帳</h1>
+        <p class="text-sm text-inkLight mt-1">每天一點點累積，換取專屬兩人的小約定</p>
+      </div>
+
+      <div class="journal-card p-6">
+        <label class="block text-sm font-bold text-ink mb-3">1. 請選擇你的角色</label>
+        <div class="grid grid-cols-2 gap-3 mb-6">
+          <button type="button" id="role-btn-M" onclick="selectLoginRole('M')" class="btn-hand py-3.5 px-3 bg-card text-ink flex-col gap-1">
+            <span class="text-base">男友</span>
+            <span class="text-xs font-normal text-inkLight">角色 M</span>
+          </button>
+          <button type="button" id="role-btn-F" onclick="selectLoginRole('F')" class="btn-hand py-3.5 px-3 bg-card text-ink flex-col gap-1">
+            <span class="text-base">女友</span>
+            <span class="text-xs font-normal text-inkLight">角色 F</span>
+          </button>
+        </div>
+
+        <label for="login-pin" class="block text-sm font-bold text-ink mb-2">2. 輸入 4 位數專屬 PIN 碼</label>
+        <input
+          id="login-pin"
+          type="password"
+          inputmode="numeric"
+          maxlength="4"
+          placeholder="請輸入 4 位數字"
+          class="journal-input text-center text-xl tracking-[0.45em] font-bold mb-2"
+        />
+        <p id="login-demo-hint" class="text-xs text-inkLight text-center mb-6">
+          體驗預設密碼：男友 1234 / 女友 5678
+        </p>
+
+        <button type="button" onclick="handleLoginSubmit()" class="btn-hand btn-primary w-full py-3.5 text-base">
+          進入手帳
+        </button>
+
+        <div class="mt-5 pt-4 border-t border-dashed border-inkLight/40 flex items-center justify-between text-xs text-inkLight">
+          <span id="login-mode-label">目前為本機體驗模式</span>
+          <button type="button" onclick="openSettingsModal()" class="underline font-bold text-ink hover:text-matcha">
+            設定雲端連線
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- ==================== 畫面 B：登入後主應用程式 ==================== -->
+    <div id="screen-main" class="hidden flex-1 flex flex-col">
+
+      <!-- 頂部標頭列 -->
+      <header class="sticky top-0 z-30 bg-paper/95 border-b border-ink/15 px-5 py-3.5 flex items-center justify-between">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <h2 id="header-user-name" class="text-lg font-bold text-ink truncate">載入中…</h2>
+          <span id="header-mode-badge" class="text-[11px] font-bold px-2 py-0.5 rounded-full border border-ink/40 bg-card text-inkLight shrink-0">
+            體驗模式
+          </span>
+        </div>
+        <div class="flex items-center gap-2">
+          <button type="button" onclick="refreshDashboard(true)" title="重新整理" class="btn-hand btn-outline w-9 h-9 p-0">
+            <svg id="refresh-icon" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12a9 9 0 1 1-2.64-6.36" />
+              <path d="M21 3v6h-6" />
+            </svg>
+          </button>
+          <button type="button" onclick="openSettingsModal()" title="設定與切換身分" class="btn-hand btn-outline w-9 h-9 p-0">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3" />
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.6.85 1 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z" />
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- 主要內容捲動區（底部預留導覽列空間） -->
+      <main id="tab-content" class="flex-1 px-5 pt-5 pb-28 space-y-6">
+
+        <!-- ==================== TAB 1：今日打卡 ==================== -->
+        <section id="view-checkin" class="space-y-6">
+          <!-- 今日日期與摘要 -->
+          <div class="flex items-end justify-between">
+            <div>
+              <p id="today-date-label" class="text-xs font-bold text-inkLight tracking-wider"></p>
+              <h3 class="text-xl font-bold text-ink mt-0.5">今日習慣目標</h3>
+            </div>
+            <div class="text-right">
+              <span class="text-xs text-inkLight block">目前累積</span>
+              <span id="checkin-points-summary" class="text-lg font-bold text-matcha">0 點</span>
+            </div>
+          </div>
+
+          <!-- 任務清單 -->
+          <div id="my-tasks-list" class="space-y-3.5"></div>
+
+          <!-- 近期打卡紀錄 -->
+          <div class="pt-2">
+            <div class="flex items-center justify-between mb-3">
+              <h4 class="text-base font-bold text-ink">近期打卡紀錄</h4>
+              <span class="text-xs text-inkLight">以提交時間為準</span>
+            </div>
+            <div id="my-logs-list" class="space-y-3"></div>
+          </div>
+        </section>
+
+        <!-- ==================== TAB 2：集點卡與獎勵 ==================== -->
+        <section id="view-stamps" class="hidden space-y-6">
+          <!-- 視覺化手帳集點卡（單一視覺焦點：僅已蓋章印章帶色彩） -->
+          <div class="relative pt-2">
+            <div class="journal-card p-5 pt-6 relative">
+              <!-- 極簡素色紙膠帶（克制原則：唯一裝飾元素） -->
+              <div class="masking-tape" aria-hidden="true"></div>
+
+              <div class="flex items-baseline justify-between mb-5">
+                <div>
+                  <h3 class="text-lg font-bold text-ink">我的集點卡</h3>
+                  <p id="stamp-card-page-label" class="text-xs text-inkLight mt-0.5">第 1 張集點卡</p>
+                </div>
+                <div class="text-right">
+                  <span id="stamp-points-big" class="text-2xl font-bold text-ink">0</span>
+                  <span id="stamp-points-denom" class="text-xs font-bold text-inkLight">/ 10 點</span>
+                </div>
+              </div>
+
+              <!-- 10 格集點印章區（2 列 x 5 欄） -->
+              <div id="stamp-grid" class="grid grid-cols-5 gap-y-4 gap-x-2 justify-items-center py-2"></div>
+
+              <!-- 多頁集點卡切換（當點數 > 10 時顯示） -->
+              <div id="stamp-pagination" class="hidden mt-5 pt-3 border-t border-dashed border-inkLight/40 flex items-center justify-between text-xs">
+                <button type="button" onclick="changeStampPage(-1)" id="btn-prev-card" class="btn-hand btn-outline px-3 py-1.5 text-xs">上一張</button>
+                <span id="stamp-page-indicator" class="font-bold text-inkLight">1 / 1</span>
+                <button type="button" onclick="changeStampPage(1)" id="btn-next-card" class="btn-hand btn-outline px-3 py-1.5 text-xs">下一張</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 獎勵兌換商店 -->
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <h4 class="text-base font-bold text-ink">專屬獎勵兌換</h4>
+              <span id="rewards-setter-hint" class="text-xs text-inkLight">由另一半設定</span>
+            </div>
+            <div id="my-rewards-list" class="space-y-3"></div>
+          </div>
+
+          <!-- 我的兌換券紀錄 -->
+          <div class="pt-1">
+            <h4 class="text-base font-bold text-ink mb-3">已兌換紀錄</h4>
+            <div id="my-redemptions-list" class="space-y-2.5"></div>
+          </div>
+        </section>
+
+        <!-- ==================== TAB 3：審核待辦 ==================== -->
+        <section id="view-review" class="hidden space-y-6">
+          <div>
+            <h3 class="text-xl font-bold text-ink">審核另一半</h3>
+            <p id="review-subtitle" class="text-xs text-inkLight mt-0.5">確認對方的打卡紀錄並蓋上印章</p>
+          </div>
+
+          <!-- Section A: 待審核打卡 -->
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <h4 class="text-sm font-bold text-ink">待審核打卡</h4>
+              <span id="pending-review-count" class="text-xs font-bold text-terracotta">0 筆</span>
+            </div>
+            <div id="pending-reviews-list" class="space-y-3.5"></div>
+          </div>
+
+          <!-- Section B: 待兌現獎勵 -->
+          <div class="space-y-3 pt-2">
+            <div class="flex items-center justify-between">
+              <h4 class="text-sm font-bold text-ink">對方已兌換・待兌現獎勵</h4>
+              <span id="pending-redemption-count" class="text-xs font-bold text-terracotta">0 筆</span>
+            </div>
+            <div id="partner-redemptions-list" class="space-y-3"></div>
+          </div>
+        </section>
+
+        <!-- ==================== TAB 4：管理另一半 ==================== -->
+        <section id="view-manage" class="hidden space-y-6">
+          <!-- 監督者權限明確提示 -->
+          <div class="journal-card p-4 bg-card flex items-center justify-between">
+            <div>
+              <span class="text-[11px] font-bold text-matcha block">監督者專屬後台</span>
+              <h3 id="manage-banner-title" class="text-base font-bold text-ink mt-0.5">正在管理：另一半 的集章設定</h3>
+            </div>
+            <div class="text-right shrink-0 pl-2">
+              <span class="text-[11px] text-inkLight block">對方目前點數</span>
+              <span id="manage-partner-points" class="text-base font-bold text-terracotta">0 點</span>
+            </div>
+          </div>
+
+          <!-- 驚喜加碼發放 -->
+          <div class="journal-card-alt p-5">
+            <div class="flex items-center justify-between gap-3">
+              <div>
+                <h4 class="text-base font-bold text-ink">發放特別貼紙</h4>
+                <p class="text-xs text-inkLight mt-0.5">主動加碼點數，給對方一個日常小驚喜</p>
+              </div>
+              <button type="button" onclick="openBonusModal()" class="btn-hand btn-accent px-4 py-2.5 text-sm shrink-0">
+                發放加碼
+              </button>
+            </div>
+          </div>
+
+          <!-- 管理對方習慣目標 -->
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <h4 class="text-base font-bold text-ink">習慣目標清單</h4>
+              <button type="button" onclick="openTaskModal(null)" class="btn-hand btn-primary px-3.5 py-1.5 text-xs">
+                ＋ 新增目標
+              </button>
+            </div>
+            <div id="partner-tasks-list" class="space-y-3"></div>
+          </div>
+
+          <!-- 管理對方獎勵清單 -->
+          <div class="space-y-3 pt-2">
+            <div class="flex items-center justify-between">
+              <h4 class="text-base font-bold text-ink">可兌換獎勵清單</h4>
+              <button type="button" onclick="openRewardModal(null)" class="btn-hand btn-accent px-3.5 py-1.5 text-xs">
+                ＋ 新增獎勵
+              </button>
+            </div>
+            <div id="partner-rewards-list" class="space-y-3"></div>
+          </div>
+        </section>
+
+      </main>
+
+      <!-- ==================== 固定底部導覽列（4 個極簡手繪線條圖示） ==================== -->
+      <nav class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[440px] z-30 bg-card border-t-2 border-ink safe-bottom">
+        <div class="grid grid-cols-4 pt-2.5 pb-1">
+          <button type="button" onclick="switchTab('checkin')" id="nav-checkin" class="nav-item flex flex-col items-center gap-1 py-1 text-matcha">
+            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="4" y="4" width="16" height="16" rx="3" />
+              <path d="m8.5 12.2 2.4 2.4 4.8-5.2" />
+            </svg>
+            <span class="text-[11px] font-bold">打卡</span>
+          </button>
+
+          <button type="button" onclick="switchTab('stamps')" id="nav-stamps" class="nav-item flex flex-col items-center gap-1 py-1 text-inkLight">
+            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="8" stroke-dasharray="3 2.5" />
+              <circle cx="12" cy="12" r="3.5" />
+            </svg>
+            <span class="text-[11px] font-bold">集點卡</span>
+          </button>
+
+          <button type="button" onclick="switchTab('review')" id="nav-review" class="nav-item relative flex flex-col items-center gap-1 py-1 text-inkLight">
+            <div class="relative">
+              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 20h14" />
+                <path d="M7 16h10l-1-3H8l-1 3Z" />
+                <path d="M10 13V9a2 2 0 1 1 4 0v4" />
+              </svg>
+              <span id="nav-review-badge" class="hidden absolute -top-1.5 -right-2.5 min-w-[18px] h-[18px] px-1 rounded-full bg-terracotta text-card text-[10px] font-bold flex items-center justify-center border border-ink">
+                0
+              </span>
+            </div>
+            <span class="text-[11px] font-bold">審核</span>
+          </button>
+
+          <button type="button" onclick="switchTab('manage')" id="nav-manage" class="nav-item flex flex-col items-center gap-1 py-1 text-inkLight">
+            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 20h9" />
+              <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" />
+            </svg>
+            <span class="text-[11px] font-bold">管理</span>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <!-- ================= 共用互動彈窗 (Modal) ================= -->
+  <div id="modal-backdrop" class="fixed inset-0 z-40 hidden items-center justify-center bg-ink/40 px-5" onclick="closeModalOnBackdrop(event)">
+    <div id="modal-box" class="journal-card w-full max-w-[390px] p-6 max-h-[85dvh] overflow-y-auto" onclick="event.stopPropagation()">
+      <div class="flex items-center justify-between mb-4">
+        <h3 id="modal-title" class="text-lg font-bold text-ink">標題</h3>
+        <button type="button" onclick="closeModal()" class="text-inkLight hover:text-ink p-1" aria-label="關閉">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M18 6 6 18M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <!-- ================= 核心應用程式邏輯 ================= -->
+  <script>
+    /**
+     * =========================================================================
+     * 後端連線設定區（階段四正式部署時，可直接將 Apps Script 網址貼於此引號內）
+     * 若留空，系統將自動啟動「本機體驗模式」，亦可透過畫面右上角齒輪隨時輸入網址。
+     * =========================================================================
+     */
+    const CONFIG_API_URL = '';
+
+    // LocalStorage 儲存鍵名
+    const STORAGE_KEYS = {
+      API_URL: 'couple_stamp_api_url',
+      SESSION: 'couple_stamp_session',
+      DEMO_DB: 'couple_stamp_demo_db_v1'
+    };
+
+    // 全域應用程式狀態
+    const state = {
+      session: null,         // { user_id: 'M'|'F', display_name: string }
+      selectedLoginRole: 'F',
+      activeTab: 'checkin',
+      stampPage: 1,
+      dashboard: null
+    };
+
+    // ================= 動態注入 PWA Manifest 與圖示（單檔即可支援加入主畫面） =================
+    (function setupPwaMeta() {
+      try {
+        const iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192"><rect width="192" height="192" rx="40" fill="#EFE8DC"/><rect x="16" y="16" width="160" height="160" rx="30" fill="#FAF7F0" stroke="#2C2623" stroke-width="6"/><circle cx="96" cy="96" r="46" fill="none" stroke="#6F823E" stroke-width="7" stroke-dasharray="10 8"/><path d="M74 97l15 15 30-32" fill="none" stroke="#D67754" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+        const iconUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(iconSvg);
+
+        const appleIcon = document.createElement('link');
+        appleIcon.rel = 'apple-touch-icon';
+        appleIcon.href = iconUrl;
+        document.head.appendChild(appleIcon);
+
+        const favicon = document.createElement('link');
+        favicon.rel = 'icon';
+        favicon.type = 'image/svg+xml';
+        favicon.href = iconUrl;
+        document.head.appendChild(favicon);
+
+        const manifest = {
+          name: '雙人集章手帳',
+          short_name: '集章手帳',
+          start_url: '.',
+          display: 'standalone',
+          background_color: '#EFE8DC',
+          theme_color: '#EFE8DC',
+          icons: [{ src: iconUrl, sizes: '192x192', type: 'image/svg+xml' }]
+        };
+        const blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+        const manifestLink = document.createElement('link');
+        manifestLink.rel = 'manifest';
+        manifestLink.href = URL.createObjectURL(blob);
+        document.head.appendChild(manifestLink);
+      } catch (e) {
+        // 忽略瀏覽器不支援 blob manifest 的情況
+      }
+    })();
+
+    // ================= 工具函式 =================
+    function getApiUrl() {
+      const saved = (localStorage.getItem(STORAGE_KEYS.API_URL) || https://script.google.com/macros/s/AKfycbwlsdjKxCTjCA4gdyfPM6AH8r_3SluDONjWmY5Q28Isek8ObsYndwfzm-nSh8JIFkw_Sw/exec).trim();
+      return saved || CONFIG_API_URL.trim();
+    }
+
+    function isLiveMode() {
+      return Boolean(getApiUrl());
+    }
+
+    function escapeHtml(str) {
+      return String(str ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function formatDateTime(dateObj) {
+      const pad = n => String(n).padStart(2, '0');
+      return `${dateObj.getFullYear()}-${pad(dateObj.getMonth() + 1)}-${pad(dateObj.getDate())} ${pad(dateObj.getHours())}:${pad(dateObj.getMinutes())}:${pad(dateObj.getSeconds())}`;
+    }
+
+    function formatShortTime(str) {
+      if (!str) return '';
+      const s = String(str);
+      // 轉換 YYYY-MM-DD HH:mm:ss 為 MM/DD HH:mm
+      const m = s.match(/^(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2})/);
+      if (m) return `${m[2]}/${m[3]} ${m[4]}:${m[5]}`;
+      return s;
+    }
+
+    function getTodayDisplay() {
+      const now = new Date();
+      const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
+      return `${now.getFullYear()} 年 ${now.getMonth() + 1} 月 ${now.getDate()} 日（週${weekdays[now.getDay()]}）`;
+    }
+
+    // 頂部 Toast 通知
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      const accentBorder = type === 'error' ? 'border-terracotta' : 'border-ink';
+      const dotColor = type === 'error' ? 'bg-terracotta' : 'bg-matcha';
+
+      toast.className = `journal-card ${accentBorder} px-4 py-3 text-sm font-bold text-ink flex items-center gap-2.5 pointer-events-auto transition-all duration-200`;
+      toast.innerHTML = `<span class="w-2.5 h-2.5 rounded-full ${dotColor} shrink-0"></span><span>${escapeHtml(message)}</span>`;
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(-8px)';
+        setTimeout(() => toast.remove(), 220);
+      }, 2800);
+    }
+
+    function setLoading(show, text = '資料同步中…') {
+      const el = document.getElementById('loading-overlay');
+      document.getElementById('loading-text').textContent = text;
+      if (show) {
+        el.classList.remove('hidden');
+        el.classList.add('flex');
+      } else {
+        el.classList.add('hidden');
+        el.classList.remove('flex');
+      }
+    }
+
+    // ================= 本機體驗模式資料庫（模擬後端行為） =================
+    function createInitialDemoDb() {
+      const yesterday = new Date(Date.now() - 86400000);
+      const yStr = formatDateTime(yesterday);
+      const twoDaysAgo = formatDateTime(new Date(Date.now() - 172800000));
+
+      return {
+        users: [
+          { user_id: 'M', display_name: '男友', pin_code: '1234', current_points: 4 },
+          { user_id: 'F', display_name: '女友', pin_code: '5678', current_points: 6 }
+        ],
+        tasks: [
+          { task_id: 'T001', owner_id: 'F', title: '運動 30 分鐘', points: 1, is_active: true },
+          { task_id: 'T002', owner_id: 'F', title: '0 點前好好睡覺', points: 2, is_active: true },
+          { task_id: 'T003', owner_id: 'M', title: '運動 30 分鐘', points: 1, is_active: true },
+          { task_id: 'T004', owner_id: 'M', title: '主動整理桌面', points: 1, is_active: true }
+        ],
+        logs: [
+          {
+            log_id: 'L_DEMO_1',
+            task_id: 'T001',
+            task_title: '運動 30 分鐘',
+            user_id: 'F',
+            points: 1,
+            note: '昨天晚上做了 35 分鐘帕梅拉有氧！',
+            checkin_time: yStr,
+            status: '待審核'
+          },
+          {
+            log_id: 'L_DEMO_2',
+            task_id: 'T003',
+            task_title: '運動 30 分鐘',
+            user_id: 'M',
+            points: 1,
+            note: '下班後去河濱慢跑 4 公里',
+            checkin_time: yStr,
+            status: '待審核'
+          },
+          {
+            log_id: 'L_DEMO_3',
+            task_id: 'T002',
+            task_title: '0 點前好好睡覺',
+            user_id: 'F',
+            points: 2,
+            note: '11:45 準時關燈睡覺',
+            checkin_time: twoDaysAgo,
+            status: '已通過'
+          }
+        ],
+        rewards: [
+          { reward_id: 'R001', owner_id: 'F', title: '肩頸按摩券 20 分鐘', cost_points: 10, is_active: true },
+          { reward_id: 'R002', owner_id: 'F', title: '指定大餐兌換券', cost_points: 30, is_active: true },
+          { reward_id: 'R003', owner_id: 'M', title: '免洗碗金牌一次', cost_points: 10, is_active: true },
+          { reward_id: 'R004', owner_id: 'M', title: '週末遊戲自由時光', cost_points: 20, is_active: true }
+        ],
+        redemptions: []
+      };
+    }
+
+    function getDemoDb() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEYS.DEMO_DB);
+        if (raw) return JSON.parse(raw);
+      } catch (e) {}
+      const init = createInitialDemoDb();
+      saveDemoDb(init);
+      return init;
+    }
+
+    function saveDemoDb(db) {
+      localStorage.setItem(STORAGE_KEYS.DEMO_DB, JSON.stringify(db));
+    }
+
+    function demoApiHandler(payload) {
+      const db = getDemoDb();
+      const now = new Date();
+      const todayStr = formatDateTime(now).slice(0, 10);
+      const timeStr = formatDateTime(now);
+      const { action } = payload;
+
+      if (action === 'login') {
+        const user = db.users.find(u => u.user_id === payload.userId);
+        if (!user) throw new Error('找不到該使用者角色');
+        if (String(user.pin_code) !== String(payload.pin).trim()) {
+          throw new Error('PIN 碼不正確，請再試一次');
+        }
+        return { user_id: user.user_id, display_name: user.display_name };
+      }
+
+      if (action === 'getDashboard') {
+        const userId = payload.userId;
+        const partnerId = userId === 'M' ? 'F' : 'M';
+        const me = db.users.find(u => u.user_id === userId);
+        const partner = db.users.find(u => u.user_id === partnerId);
+
+        const checkedIds = new Set(
+          db.logs
+            .filter(l => l.user_id === userId && l.checkin_time.startsWith(todayStr) && l.status !== '已退回')
+            .map(l => l.task_id)
+        );
+
+        return {
+          me: { ...me },
+          partner: { ...partner },
+          myTasks: db.tasks.filter(t => t.owner_id === userId && t.is_active).map(t => ({ ...t, checked_today: checkedIds.has(t.task_id) })),
+          partnerTasks: db.tasks.filter(t => t.owner_id === partnerId),
+          pendingReviews: db.logs.filter(l => l.user_id === partnerId && l.status === '待審核').slice().reverse(),
+          myLogs: db.logs.filter(l => l.user_id === userId).slice().reverse().slice(0, 20),
+          myRewards: db.rewards.filter(r => r.owner_id === userId && r.is_active),
+          partnerRewards: db.rewards.filter(r => r.owner_id === partnerId),
+          myRedemptions: db.redemptions.filter(r => r.user_id === userId).slice().reverse().slice(0, 15),
+          partnerPendingRedemptions: db.redemptions.filter(r => r.user_id === partnerId && !r.is_fulfilled).slice().reverse()
+        };
+      }
+
+      if (action === 'checkin') {
+        const task = db.tasks.find(t => t.task_id === payload.taskId && t.owner_id === payload.userId);
+        if (!task) throw new Error('找不到該項任務');
+        const already = db.logs.some(
+          l => l.user_id === payload.userId && l.task_id === payload.taskId && l.checkin_time.startsWith(todayStr) && l.status !== '已退回'
+        );
+        if (already) throw new Error('這項任務今天已經打過卡囉！');
+        const logId = 'L' + Date.now();
+        db.logs.push({
+          log_id: logId,
+          task_id: task.task_id,
+          task_title: task.title,
+          user_id: payload.userId,
+          points: Number(task.points),
+          note: payload.note || '',
+          checkin_time: timeStr,
+          status: '待審核'
+        });
+        saveDemoDb(db);
+        return { logId };
+      }
+
+      if (action === 'reviewLog') {
+        const log = db.logs.find(l => l.log_id === payload.logId);
+        if (!log) throw new Error('找不到該筆打卡紀錄');
+        if (log.status !== '待審核') throw new Error('這筆紀錄已經審核過了');
+        if (log.user_id === payload.reviewerId) throw new Error('不能自己審核自己的打卡喔！');
+
+        if (payload.decision === 'approve') {
+          log.status = '已通過';
+          const executor = db.users.find(u => u.user_id === log.user_id);
+          executor.current_points = Math.max(0, Number(executor.current_points) + Number(log.points));
+        } else {
+          log.status = '已退回';
+          if (payload.rejectReason) {
+            log.note = (log.note ? log.note + ' | ' : '') + '退回原因：' + payload.rejectReason;
+          }
+        }
+        saveDemoDb(db);
+        return { status: log.status };
+      }
+
+      if (action === 'giveBonus') {
+        const partnerId = payload.giverId === 'M' ? 'F' : 'M';
+        const pts = Number(payload.points);
+        if (!payload.title || isNaN(pts) || pts <= 0) throw new Error('請輸入正確的名稱與正整數點數');
+        db.logs.push({
+          log_id: 'B' + Date.now(),
+          task_id: 'BONUS',
+          task_title: '🎁 ' + payload.title,
+          user_id: partnerId,
+          points: pts,
+          note: payload.note || '特別加碼貼紙',
+          checkin_time: timeStr,
+          status: '已通過'
+        });
+        const partner = db.users.find(u => u.user_id === partnerId);
+        partner.current_points = Number(partner.current_points) + pts;
+        saveDemoDb(db);
+        return { success: true };
+      }
+
+      if (action === 'redeemReward') {
+        const reward = db.rewards.find(r => r.reward_id === payload.rewardId && r.owner_id === payload.userId);
+        if (!reward) throw new Error('找不到該項獎勵');
+        const user = db.users.find(u => u.user_id === payload.userId);
+        const cost = Number(reward.cost_points);
+        if (Number(user.current_points) < cost) throw new Error('目前點數不足以兌換此獎勵喔！');
+        user.current_points = Number(user.current_points) - cost;
+        db.redemptions.push({
+          redeem_id: 'RD' + Date.now(),
+          reward_id: reward.reward_id,
+          reward_title: reward.title,
+          user_id: payload.userId,
+          cost_points: cost,
+          redeem_time: timeStr,
+          is_fulfilled: false
+        });
+        saveDemoDb(db);
+        return { success: true };
+      }
+
+      if (action === 'saveTask') {
+        const ownerId = payload.editorId === 'M' ? 'F' : 'M';
+        if (payload.taskId) {
+          const task = db.tasks.find(t => t.task_id === payload.taskId && t.owner_id === ownerId);
+          if (!task) throw new Error('找不到要修改的任務');
+          task.title = payload.title;
+          task.points = Number(payload.points);
+          task.is_active = payload.isActive !== false;
+        } else {
+          db.tasks.push({
+            task_id: 'T' + Date.now().toString().slice(-6),
+            owner_id: ownerId,
+            title: payload.title,
+            points: Number(payload.points),
+            is_active: true
+          });
+        }
+        saveDemoDb(db);
+        return { success: true };
+      }
+
+      if (action === 'saveReward') {
+        const ownerId = payload.editorId === 'M' ? 'F' : 'M';
+        if (payload.rewardId) {
+          const reward = db.rewards.find(r => r.reward_id === payload.rewardId && r.owner_id === ownerId);
+          if (!reward) throw new Error('找不到要修改的獎勵');
+          reward.title = payload.title;
+          reward.cost_points = Number(payload.costPoints);
+          reward.is_active = payload.isActive !== false;
+        } else {
+          db.rewards.push({
+            reward_id: 'R' + Date.now().toString().slice(-6),
+            owner_id: ownerId,
+            title: payload.title,
+            cost_points: Number(payload.costPoints),
+            is_active: true
+          });
+        }
+        saveDemoDb(db);
+        return { success: true };
+      }
+
+      if (action === 'fulfillRedemption') {
+        const item = db.redemptions.find(r => r.redeem_id === payload.redeemId);
+        if (!item) throw new Error('找不到該筆兌換紀錄');
+        item.is_fulfilled = true;
+        saveDemoDb(db);
+        return { success: true };
+      }
+
+      throw new Error('未知操作');
+    }
+
+    // ================= 統一 API 呼叫層（支援雲端 GAS 與體驗模式） =================
+    async function callApi(action, params = {}, loadingText = '資料同步中…') {
+      const apiUrl = getApiUrl();
+      setLoading(true, loadingText);
+      try {
+        if (!apiUrl) {
+          // 模擬短暫網路回饋感
+          await new Promise(r => setTimeout(r, 180));
+          return demoApiHandler({ action, ...params });
+        }
+
+        const res = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action, ...params })
+        });
+        if (!res.ok) throw new Error(`伺服器連線失敗 (${res.status})`);
+        const json = await res.json();
+        if (json.status !== 'ok') {
+          throw new Error(json.message || '操作失敗，請稍後再試');
+        }
+        return json.data;
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    // ================= 登入流程 =================
+    function selectLoginRole(role) {
+      state.selectedLoginRole = role;
+      ['M', 'F'].forEach(r => {
+        const btn = document.getElementById(`role-btn-${r}`);
+        if (r === role) {
+          btn.classList.add('bg-matcha', 'text-card', 'shadow-[2px_2px_0px_#2C2623]');
+          btn.classList.remove('bg-card', 'text-ink');
+          btn.querySelector('span:last-child').classList.replace('text-inkLight', 'text-card/80');
+        } else {
+          btn.classList.remove('bg-matcha', 'text-card', 'shadow-[2px_2px_0px_#2C2623]');
+          btn.classList.add('bg-card', 'text-ink');
+          btn.querySelector('span:last-child').classList.replace('text-card/80', 'text-inkLight');
+        }
+      });
+    }
+
+    async function handleLoginSubmit() {
+      const pinInput = document.getElementById('login-pin');
+      const pin = pinInput.value.trim();
+      if (pin.length < 4) {
+        showToast('請輸入 4 位數 PIN 碼', 'error');
+        pinInput.focus();
+        return;
+      }
+      try {
+        const user = await callApi('login', { userId: state.selectedLoginRole, pin }, '驗證身分中…');
+        state.session = user;
+        localStorage.setItem(STORAGE_KEYS.SESSION, JSON.stringify(user));
+        pinInput.value = '';
+        showMainApp();
+        showToast(`歡迎回來，${user.display_name}！`);
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    function updateLoginModeHints() {
+      const live = isLiveMode();
+      document.getElementById('login-demo-hint').classList.toggle('hidden', live);
+      document.getElementById('login-mode-label').textContent = live ? '已連結 Google 試算表雲端' : '目前為本機體驗模式';
+    }
+
+    // ================= 畫面切換與儀表板渲染 =================
+    function showLoginScreen() {
+      document.getElementById('screen-main').classList.add('hidden');
+      document.getElementById('screen-login').classList.remove('hidden');
+      selectLoginRole(state.selectedLoginRole);
+      updateLoginModeHints();
+    }
+
+    async function showMainApp() {
+      document.getElementById('screen-login').classList.add('hidden');
+      document.getElementById('screen-main').classList.remove('hidden');
+      document.getElementById('today-date-label').textContent = getTodayDisplay();
+      updateHeaderBadges();
+      switchTab(state.activeTab);
+      await refreshDashboard(false);
+    }
+
+    function updateHeaderBadges() {
+      const live = isLiveMode();
+      const badge = document.getElementById('header-mode-badge');
+      badge.textContent = live ? '雲端連線' : '體驗模式';
+      badge.className = live
+        ? 'text-[11px] font-bold px-2 py-0.5 rounded-full border border-matcha bg-matchaSoft/25 text-matcha shrink-0'
+        : 'text-[11px] font-bold px-2 py-0.5 rounded-full border border-ink/35 bg-card text-inkLight shrink-0';
+    }
+
+    async function refreshDashboard(showFeedback = false) {
+      if (!state.session) return;
+      try {
+        const data = await callApi('getDashboard', { userId: state.session.user_id }, '更新手帳資料…');
+        state.dashboard = data;
+        // 同步更新最新暱稱
+        state.session.display_name = data.me.display_name;
+        localStorage.setItem(STORAGE_KEYS.SESSION, JSON.stringify(state.session));
+        // 計算集點卡預設顯示最新頁
+        const totalPages = Math.max(1, Math.ceil(Math.max(1, data.me.current_points) / 10));
+        if (state.stampPage > totalPages) state.stampPage = totalPages;
+
+        renderAllViews();
+        if (showFeedback) showToast('手帳資料已更新');
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    function switchTab(tabName) {
+      state.activeTab = tabName;
+      const tabs = ['checkin', 'stamps', 'review', 'manage'];
+      tabs.forEach(t => {
+        document.getElementById(`view-${t}`).classList.toggle('hidden', t !== tabName);
+        const navBtn = document.getElementById(`nav-${t}`);
+        if (t === tabName) {
+          navBtn.classList.add('text-matcha');
+          navBtn.classList.remove('text-inkLight');
+        } else {
+          navBtn.classList.remove('text-matcha');
+          navBtn.classList.add('text-inkLight');
+        }
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function renderAllViews() {
+      const d = state.dashboard;
+      if (!d) return;
+
+      document.getElementById('header-user-name').textContent = `${d.me.display_name}的手帳`;
+      updateHeaderBadges();
+
+      // 底部審核待辦紅點（待審核打卡 + 待兌現獎勵）
+      const pendingTotal = d.pendingReviews.length + d.partnerPendingRedemptions.length;
+      const navBadge = document.getElementById('nav-review-badge');
+      if (pendingTotal > 0) {
+        navBadge.textContent = pendingTotal > 9 ? '9+' : pendingTotal;
+        navBadge.classList.remove('hidden');
+      } else {
+        navBadge.classList.add('hidden');
+      }
+
+      renderCheckinTab(d);
+      renderStampsTab(d);
+      renderReviewTab(d);
+      renderManageTab(d);
+    }
+
+    // ---------- TAB 1 渲染：今日打卡 ----------
+    function renderCheckinTab(d) {
+      document.getElementById('checkin-points-summary').textContent = `${d.me.current_points} 點`;
+
+      const tasksEl = document.getElementById('my-tasks-list');
+      if (!d.myTasks.length) {
+        tasksEl.innerHTML = `
+          <div class="journal-card p-6 text-center text-sm text-inkLight">
+            ${escapeHtml(d.partner.display_name)} 尚未為你設定習慣目標喔。
+          </div>`;
+      } else {
+        tasksEl.innerHTML = d.myTasks.map(t => `
+          <div class="journal-card p-5 flex items-center justify-between gap-3">
+            <div class="min-w-0">
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="text-base font-bold text-ink break-words">${escapeHtml(t.title)}</span>
+                <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-matchaSoft/30 text-matcha border border-matcha/40 shrink-0">
+                  +${t.points} 點
+                </span>
+              </div>
+              <p class="text-xs text-inkLight mt-1">${t.checked_today ? '今日已完成提交，辛苦了！' : '完成後點擊右側按鈕送出審核'}</p>
+            </div>
+            <button
+              type="button"
+              ${t.checked_today ? 'disabled' : `onclick="openCheckinModal('${escapeHtml(t.task_id)}')"`}
+              class="btn-hand ${t.checked_today ? '' : 'btn-primary'} px-4 py-2.5 text-sm shrink-0"
+            >
+              ${t.checked_today ? '今日已打卡' : '打卡'}
+            </button>
+          </div>
+        `).join('');
+      }
+
+      const logsEl = document.getElementById('my-logs-list');
+      if (!d.myLogs.length) {
+        logsEl.innerHTML = `<div class="text-center py-6 text-xs text-inkLight">還沒有打卡紀錄，完成今天的第一個目標吧！</div>`;
+      } else {
+        logsEl.innerHTML = d.myLogs.map(l => {
+          let badgeClass = 'bg-mutedFill text-inkLight border-inkLight/50';
+          if (l.status === '已通過') badgeClass = 'bg-matchaSoft/25 text-matcha border-matcha/50';
+          if (l.status === '待審核') badgeClass = 'bg-terracottaSoft/25 text-terracotta border-terracotta/50';
+
+          return `
+            <div class="journal-card-alt px-4 py-3.5">
+              <div class="flex items-start justify-between gap-2">
+                <div class="min-w-0">
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <span class="text-sm font-bold text-ink">${escapeHtml(l.task_title)}</span>
+                    <span class="text-xs font-bold text-matcha">+${l.points} 點</span>
+                  </div>
+                  <p class="text-[11px] text-inkLight mt-0.5">${formatShortTime(l.checkin_time)}</p>
+                </div>
+                <span class="text-[11px] font-bold px-2 py-0.5 rounded-full border shrink-0 ${badgeClass}">
+                  ${escapeHtml(l.status)}
+                </span>
+              </div>
+              ${l.note ? `<p class="text-xs text-ink/85 mt-2 pt-2 border-t border-dashed border-inkLight/35 leading-relaxed">${escapeHtml(l.note)}</p>` : ''}
+            </div>
+          `;
+        }).join('');
+      }
+    }
+
+    // ---------- TAB 2 渲染：集點卡與獎勵 ----------
+    function renderStampsTab(d) {
+      const pts = Number(d.me.current_points) || 0;
+      const totalPages = Math.max(1, Math.ceil(Math.max(1, pts) / 10));
+      const page = Math.min(state.stampPage, totalPages);
+      state.stampPage = page;
+
+      const startIndex = (page - 1) * 10;
+      const filledInThisCard = Math.max(0, Math.min(10, pts - startIndex));
+
+      document.getElementById('stamp-card-page-label').textContent = `第 ${page} 張集點卡（每張 10 格）`;
+      document.getElementById('stamp-points-big').textContent = pts;
+      document.getElementById('stamp-points-denom').textContent = `/ ${totalPages * 10} 點`;
+
+      // 生成 10 格集點格：只有已蓋章的印章有色彩（單一視覺焦點）
+      const tilts = [-7, 5, -4, 7, -6, 4, -8, 6, -5, 8];
+      const gridEl = document.getElementById('stamp-grid');
+      let html = '';
+      for (let i = 0; i < 10; i++) {
+        const slotNumber = startIndex + i + 1;
+        if (i < filledInThisCard) {
+          const isTerracotta = i % 2 === 0;
+          const color = isTerracotta ? '#D67754' : '#6F823E';
+          const tilt = tilts[i % tilts.length];
+          html += `
+            <div class="stamp-slot-filled" style="--tilt: ${tilt}deg; transform: rotate(${tilt}deg);" title="第 ${slotNumber} 點已達成">
+              <svg class="w-[50px] h-[50px]" viewBox="0 0 60 60" fill="none">
+                <circle cx="30" cy="30" r="25" stroke="${color}" stroke-width="2.4" stroke-dasharray="60 3 40 2" opacity="0.92" />
+                <circle cx="30" cy="30" r="20.5" stroke="${color}" stroke-width="1.2" opacity="0.7" />
+                <path d="M21 30.5l6.2 6.2 12.8-13.4" stroke="${color}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </div>`;
+        } else {
+          html += `<div class="stamp-slot-empty">${slotNumber}</div>`;
+        }
+      }
+      gridEl.innerHTML = html;
+
+      // 多頁切換控制
+      const pagerEl = document.getElementById('stamp-pagination');
+      if (totalPages > 1) {
+        pagerEl.classList.remove('hidden');
+        document.getElementById('stamp-page-indicator').textContent = `${page} / ${totalPages}`;
+        document.getElementById('btn-prev-card').disabled = page <= 1;
+        document.getElementById('btn-next-card').disabled = page >= totalPages;
+      } else {
+        pagerEl.classList.add('hidden');
+      }
+
+      // 獎勵兌換清單
+      document.getElementById('rewards-setter-hint').textContent = `由 ${d.partner.display_name} 設定`;
+      const rewardsEl = document.getElementById('my-rewards-list');
+      if (!d.myRewards.length) {
+        rewardsEl.innerHTML = `<div class="journal-card p-5 text-center text-sm text-inkLight">尚未上架獎勵，快去提醒 ${escapeHtml(d.partner.display_name)} 新增吧！</div>`;
+      } else {
+        rewardsEl.innerHTML = d.myRewards.map(r => {
+          const canRedeem = pts >= Number(r.cost_points);
+          return `
+            <div class="journal-card p-4 flex items-center justify-between gap-3">
+              <div class="min-w-0">
+                <p class="text-base font-bold text-ink break-words">${escapeHtml(r.title)}</p>
+                <p class="text-xs font-bold text-terracotta mt-1">需要 ${r.cost_points} 點</p>
+              </div>
+              <button
+                type="button"
+                ${canRedeem ? `onclick="openRedeemModal('${escapeHtml(r.reward_id)}')"` : 'disabled'}
+                class="btn-hand ${canRedeem ? 'btn-accent' : ''} px-4 py-2 text-sm shrink-0"
+              >
+                ${canRedeem ? '兌換' : '點數不足'}
+              </button>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // 我的兌換紀錄
+      const redeemEl = document.getElementById('my-redemptions-list');
+      if (!d.myRedemptions.length) {
+        redeemEl.innerHTML = `<div class="text-center py-5 text-xs text-inkLight">目前尚無兌換紀錄</div>`;
+      } else {
+        redeemEl.innerHTML = d.myRedemptions.map(rd => {
+          const fulfilled = rd.is_fulfilled === true || rd.is_fulfilled === 'TRUE';
+          return `
+            <div class="journal-card-alt px-4 py-3 flex items-center justify-between gap-2">
+              <div class="min-w-0">
+                <p class="text-sm font-bold text-ink">${escapeHtml(rd.reward_title)}</p>
+                <p class="text-[11px] text-inkLight mt-0.5">${formatShortTime(rd.redeem_time)}・花費 ${rd.cost_points} 點</p>
+              </div>
+              <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full border shrink-0 ${
+                fulfilled
+                  ? 'bg-matchaSoft/25 text-matcha border-matcha/50'
+                  : 'bg-terracottaSoft/25 text-terracotta border-terracotta/50'
+              }">
+                ${fulfilled ? '已兌現' : '待兌現'}
+              </span>
+            </div>
+          `;
+        }).join('');
+      }
+    }
+
+    function changeStampPage(delta) {
+      state.stampPage = Math.max(1, state.stampPage + delta);
+      if (state.dashboard) renderStampsTab(state.dashboard);
+    }
+
+    // ---------- TAB 3 渲染：審核待辦 ----------
+    function renderReviewTab(d) {
+      document.getElementById('review-subtitle').textContent = `審核 ${d.partner.display_name} 提交的打卡與兌換申請`;
+      document.getElementById('pending-review-count').textContent = `${d.pendingReviews.length} 筆`;
+      document.getElementById('pending-redemption-count').textContent = `${d.partnerPendingRedemptions.length} 筆`;
+
+      const revEl = document.getElementById('pending-reviews-list');
+      if (!d.pendingReviews.length) {
+        revEl.innerHTML = `
+          <div class="journal-card p-6 text-center text-sm text-inkLight">
+            目前沒有待審核項目，喝杯茶休息一下吧
+          </div>`;
+      } else {
+        revEl.innerHTML = d.pendingReviews.map(l => `
+          <div class="journal-card p-5 space-y-3.5">
+            <div class="flex items-start justify-between gap-2">
+              <div>
+                <span class="text-xs font-bold text-inkLight">${escapeHtml(d.partner.display_name)} 提交於 ${formatShortTime(l.checkin_time)}</span>
+                <h5 class="text-base font-bold text-ink mt-0.5">${escapeHtml(l.task_title)}</h5>
+              </div>
+              <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-matchaSoft/30 text-matcha border border-matcha/40 shrink-0">
+                +${l.points} 點
+              </span>
+            </div>
+            ${l.note ? `<div class="bg-paper border border-dashed border-inkLight/50 rounded-lg px-3.5 py-2.5 text-xs text-ink leading-relaxed">「${escapeHtml(l.note)}」</div>` : ''}
+            <div class="grid grid-cols-2 gap-3 pt-1">
+              <button type="button" onclick="openRejectModal('${escapeHtml(l.log_id)}', '${escapeHtml(l.task_title)}')" class="btn-hand btn-outline-accent py-2.5 text-sm">
+                退回
+              </button>
+              <button type="button" onclick="submitReview('${escapeHtml(l.log_id)}', 'approve', '', ${l.points})" class="btn-hand btn-primary py-2.5 text-sm">
+                通過蓋章
+              </button>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      const redEl = document.getElementById('partner-redemptions-list');
+      if (!d.partnerPendingRedemptions.length) {
+        redEl.innerHTML = `<div class="text-center py-4 text-xs text-inkLight">目前沒有待兌現的獎勵券</div>`;
+      } else {
+        redEl.innerHTML = d.partnerPendingRedemptions.map(rd => `
+          <div class="journal-card-alt p-4 flex items-center justify-between gap-3">
+            <div class="min-w-0">
+              <p class="text-sm font-bold text-ink">${escapeHtml(rd.reward_title)}</p>
+              <p class="text-[11px] text-inkLight mt-0.5">${formatShortTime(rd.redeem_time)}・花費 ${rd.cost_points} 點</p>
+            </div>
+            <button type="button" onclick="fulfillRedemption('${escapeHtml(rd.redeem_id)}')" class="btn-hand btn-primary px-3.5 py-2 text-xs shrink-0">
+              標記已兌現
+            </button>
+          </div>
+        `).join('');
+      }
+    }
+
+    // ---------- TAB 4 渲染：管理另一半 ----------
+    function renderManageTab(d) {
+      document.getElementById('manage-banner-title').textContent = `正在管理：${d.partner.display_name} 的集章設定`;
+      document.getElementById('manage-partner-points').textContent = `${d.partner.current_points} 點`;
+
+      // 對方任務管理
+      const pTasksEl = document.getElementById('partner-tasks-list');
+      if (!d.partnerTasks.length) {
+        pTasksEl.innerHTML = `<div class="journal-card p-5 text-center text-sm text-inkLight">尚未替 ${escapeHtml(d.partner.display_name)} 建立目標</div>`;
+      } else {
+        pTasksEl.innerHTML = d.partnerTasks.map(t => {
+          const active = t.is_active === true || t.is_active === 'TRUE';
+          return `
+            <div class="journal-card p-4 flex items-center justify-between gap-3 ${active ? '' : 'opacity-65'}">
+              <div class="min-w-0">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <span class="text-sm font-bold text-ink">${escapeHtml(t.title)}</span>
+                  <span class="text-xs font-bold text-matcha">+${t.points} 點</span>
+                </div>
+                <span class="text-[11px] text-inkLight">${active ? '顯示於對方打卡清單' : '已暫停停用'}</span>
+              </div>
+              <div class="flex items-center gap-2.5 shrink-0">
+                <button type="button" onclick="openTaskModal('${escapeHtml(t.task_id)}')" class="btn-hand btn-outline px-2.5 py-1.5 text-xs">
+                  編輯
+                </button>
+                <button type="button" role="switch" aria-checked="${active}" onclick="toggleTaskActive('${escapeHtml(t.task_id)}')" class="toggle-track ${active ? 'active' : ''}">
+                  <span class="toggle-thumb"></span>
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // 對方獎勵管理
+      const pRewardsEl = document.getElementById('partner-rewards-list');
+      if (!d.partnerRewards.length) {
+        pRewardsEl.innerHTML = `<div class="journal-card p-5 text-center text-sm text-inkLight">尚未替 ${escapeHtml(d.partner.display_name)} 建立獎勵</div>`;
+      } else {
+        pRewardsEl.innerHTML = d.partnerRewards.map(r => {
+          const active = r.is_active === true || r.is_active === 'TRUE';
+          return `
+            <div class="journal-card p-4 flex items-center justify-between gap-3 ${active ? '' : 'opacity-65'}">
+              <div class="min-w-0">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <span class="text-sm font-bold text-ink">${escapeHtml(r.title)}</span>
+                  <span class="text-xs font-bold text-terracotta">${r.cost_points} 點</span>
+                </div>
+                <span class="text-[11px] text-inkLight">${active ? '已上架可兌換' : '已下架隱藏'}</span>
+              </div>
+              <div class="flex items-center gap-2.5 shrink-0">
+                <button type="button" onclick="openRewardModal('${escapeHtml(r.reward_id)}')" class="btn-hand btn-outline px-2.5 py-1.5 text-xs">
+                  編輯
+                </button>
+                <button type="button" role="switch" aria-checked="${active}" onclick="toggleRewardActive('${escapeHtml(r.reward_id)}')" class="toggle-track ${active ? 'active' : ''}">
+                  <span class="toggle-thumb"></span>
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+    }
+
+    // ================= 彈窗控制與各項業務互動 =================
+    function openModal(title, bodyHtml) {
+      document.getElementById('modal-title').textContent = title;
+      document.getElementById('modal-body').innerHTML = bodyHtml;
+      const backdrop = document.getElementById('modal-backdrop');
+      backdrop.classList.remove('hidden');
+      backdrop.classList.add('flex');
+    }
+
+    function closeModal() {
+      const backdrop = document.getElementById('modal-backdrop');
+      backdrop.classList.add('hidden');
+      backdrop.classList.remove('flex');
+    }
+
+    function closeModalOnBackdrop(e) {
+      if (e.target.id === 'modal-backdrop') closeModal();
+    }
+
+    // 1. 打卡確認彈窗
+    function openCheckinModal(taskId) {
+      const task = state.dashboard.myTasks.find(t => t.task_id === taskId);
+      if (!task) return;
+      openModal('送出今日打卡', `
+        <div class="space-y-4">
+          <div class="bg-paper border border-dashed border-inkLight/60 rounded-xl p-3.5 flex items-center justify-between">
+            <span class="font-bold text-ink">${escapeHtml(task.title)}</span>
+            <span class="text-xs font-bold text-matcha">+${task.points} 點</span>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-ink mb-1.5">文字備註（選填）</label>
+            <textarea id="checkin-note-input" rows="3" placeholder="選填備註，例如：慢跑 3 公里、今天流超多汗！" class="journal-input text-sm resize-none"></textarea>
+          </div>
+          <div class="grid grid-cols-2 gap-3 pt-1">
+            <button type="button" onclick="closeModal()" class="btn-hand btn-outline py-2.5 text-sm">取消</button>
+            <button type="button" onclick="submitCheckin('${escapeHtml(taskId)}')" class="btn-hand btn-primary py-2.5 text-sm">確認送出</button>
+          </div>
+        </div>
+      `);
+    }
+
+    async function submitCheckin(taskId) {
+      const note = document.getElementById('checkin-note-input').value.trim();
+      closeModal();
+      try {
+        await callApi('checkin', { userId: state.session.user_id, taskId, note }, '正在送出打卡…');
+        showToast('打卡已送出，等待另一半審核');
+        await refreshDashboard(false);
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    // 2. 審核通過 / 退回
+    function openRejectModal(logId, taskTitle) {
+      openModal('退回打卡申請', `
+        <div class="space-y-4">
+          <p class="text-sm text-ink">確定要退回「<strong>${escapeHtml(taskTitle)}</strong>」的打卡申請嗎？對方退回後今日可重新打卡。</p>
+          <div>
+            <label class="block text-xs font-bold text-ink mb-1.5">退回原因（選填）</label>
+            <input id="reject-reason-input" type="text" placeholder="例如：今天好像只動了 15 分鐘喔～" class="journal-input text-sm" />
+          </div>
+          <div class="grid grid-cols-2 gap-3 pt-1">
+            <button type="button" onclick="closeModal()" class="btn-hand btn-outline py-2.5 text-sm">取消</button>
+            <button type="button" onclick="confirmReject('${escapeHtml(logId)}')" class="btn-hand btn-accent py-2.5 text-sm">確認退回</button>
+          </div>
+        </div>
+      `);
+    }
+
+    function confirmReject(logId) {
+      const reason = document.getElementById('reject-reason-input').value.trim();
+      closeModal();
+      submitReview(logId, 'reject', reason, 0);
+    }
+
+    async function submitReview(logId, decision, rejectReason, pts) {
+      try {
+        await callApi('reviewLog', {
+          reviewerId: state.session.user_id,
+          logId,
+          decision,
+          rejectReason
+        }, decision === 'approve' ? '正在蓋章發放點數…' : '處理退回中…');
+
+        showToast(decision === 'approve' ? `審核通過！已蓋章 +${pts} 點` : '已退回該筆打卡申請');
+        await refreshDashboard(false);
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    // 3. 兌換獎勵彈窗
+    function openRedeemModal(rewardId) {
+      const reward = state.dashboard.myRewards.find(r => r.reward_id === rewardId);
+      if (!reward) return;
+      openModal('確認兌換獎勵', `
+        <div class="space-y-4">
+          <div class="bg-paper border border-dashed border-inkLight/60 rounded-xl p-4 text-center">
+            <p class="text-base font-bold text-ink">${escapeHtml(reward.title)}</p>
+            <p class="text-sm font-bold text-terracotta mt-1">將扣除 ${reward.cost_points} 點</p>
+          </div>
+          <p class="text-xs text-inkLight text-center">兌換後會立即通知 ${escapeHtml(state.dashboard.partner.display_name)} 準備兌現喔！</p>
+          <div class="grid grid-cols-2 gap-3 pt-1">
+            <button type="button" onclick="closeModal()" class="btn-hand btn-outline py-2.5 text-sm">再想想</button>
+            <button type="button" onclick="submitRedeem('${escapeHtml(rewardId)}')" class="btn-hand btn-accent py-2.5 text-sm">確認兌換</button>
+          </div>
+        </div>
+      `);
+    }
+
+    async function submitRedeem(rewardId) {
+      closeModal();
+      try {
+        await callApi('redeemReward', { userId: state.session.user_id, rewardId }, '正在兌換獎勵…');
+        showToast('兌換成功！已通知另一半兌現');
+        await refreshDashboard(false);
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    // 4. 標記獎勵已兌現
+    async function fulfillRedemption(redeemId) {
+      try {
+        await callApi('fulfillRedemption', { reviewerId: state.session.user_id, redeemId }, '正在核銷獎勵…');
+        showToast('已標記為完成兌現！');
+        await refreshDashboard(false);
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    // 5. 發放特別貼紙 / 加碼點數
+    function openBonusModal() {
+      const partnerName = state.dashboard.partner.display_name;
+      openModal(`發放特別貼紙給 ${partnerName}`, `
+        <div class="space-y-4">
+          <div>
+            <label class="block text-xs font-bold text-ink mb-1.5">加碼事由</label>
+            <input id="bonus-title" type="text" placeholder="例如：主動幫忙洗碗、今天特別自律" class="journal-input text-sm" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-ink mb-1.5">發放點數</label>
+            <input id="bonus-points" type="number" min="1" max="50" value="1" class="journal-input text-sm font-bold" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-ink mb-1.5">鼓勵小紙條（選填）</label>
+            <textarea id="bonus-note" rows="2" placeholder="寫一句稱讚對方的話吧" class="journal-input text-sm resize-none"></textarea>
+          </div>
+          <div class="grid grid-cols-2 gap-3 pt-1">
+            <button type="button" onclick="closeModal()" class="btn-hand btn-outline py-2.5 text-sm">取消</button>
+            <button type="button" onclick="submitBonus()" class="btn-hand btn-accent py-2.5 text-sm">立即發放</button>
+          </div>
+        </div>
+      `);
+    }
+
+    async function submitBonus() {
+      const title = document.getElementById('bonus-title').value.trim();
+      const points = parseInt(document.getElementById('bonus-points').value, 10);
+      const note = document.getElementById('bonus-note').value.trim();
+      if (!title || isNaN(points) || points <= 0) {
+        showToast('請填寫事由與正確點數', 'error');
+        return;
+      }
+      closeModal();
+      try {
+        await callApi('giveBonus', { giverId: state.session.user_id, title, points, note }, '正在發放特別貼紙…');
+        showToast(`已發放 +${points} 點特別貼紙！`);
+        await refreshDashboard(false);
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    // 6. 新增 / 編輯對方目標
+    function openTaskModal(taskId) {
+      const task = taskId ? state.dashboard.partnerTasks.find(t => t.task_id === taskId) : null;
+      const active = task ? (task.is_active === true || task.is_active === 'TRUE') : true;
+      openModal(task ? '編輯習慣目標' : '新增習慣目標', `
+        <div class="space-y-4">
+          <div>
+            <label class="block text-xs font-bold text-ink mb-1.5">目標名稱</label>
+            <input id="task-title-input" type="text" value="${escapeHtml(task ? task.title : '')}" placeholder="例如：運動 30 分鐘、0 點前好好睡覺" class="journal-input text-sm" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-ink mb-1.5">單次達成點數</label>
+            <input id="task-points-input" type="number" min="1" max="20" value="${task ? task.points : 1}" class="journal-input text-sm font-bold" />
+          </div>
+          <div class="grid grid-cols-2 gap-3 pt-1">
+            <button type="button" onclick="closeModal()" class="btn-hand btn-outline py-2.5 text-sm">取消</button>
+            <button type="button" onclick="submitTask('${escapeHtml(taskId || '')}', ${active})" class="btn-hand btn-primary py-2.5 text-sm">儲存目標</button>
+          </div>
+        </div>
+      `);
+    }
+
+    async function submitTask(taskId, isActive) {
+      const title = document.getElementById('task-title-input').value.trim();
+      const points = parseInt(document.getElementById('task-points-input').value, 10);
+      if (!title || isNaN(points) || points <= 0) {
+        showToast('請輸入目標名稱與正整數點數', 'error');
+        return;
+      }
+      closeModal();
+      try {
+        await callApi('saveTask', {
+          editorId: state.session.user_id,
+          taskId: taskId || undefined,
+          title,
+          points,
+          isActive
+        }, '正在儲存目標…');
+        showToast(taskId ? '目標已更新' : '已新增習慣目標');
+        await refreshDashboard(false);
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    async function toggleTaskActive(taskId) {
+      const task = state.dashboard.partnerTasks.find(t => t.task_id === taskId);
+      if (!task) return;
+      const current = task.is_active === true || task.is_active === 'TRUE';
+      try {
+        await callApi('saveTask', {
+          editorId: state.session.user_id,
+          taskId: task.task_id,
+          title: task.title,
+          points: task.points,
+          isActive: !current
+        }, '更新目標狀態…');
+        showToast(!current ? '已啟用該目標' : '已暫停該目標');
+        await refreshDashboard(false);
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    // 7. 新增 / 編輯對方獎勵
+    function openRewardModal(rewardId) {
+      const reward = rewardId ? state.dashboard.partnerRewards.find(r => r.reward_id === rewardId) : null;
+      const active = reward ? (reward.is_active === true || reward.is_active === 'TRUE') : true;
+      openModal(reward ? '編輯獎勵項目' : '新增獎勵項目', `
+        <div class="space-y-4">
+          <div>
+            <label class="block text-xs font-bold text-ink mb-1.5">獎勵名稱</label>
+            <input id="reward-title-input" type="text" value="${escapeHtml(reward ? reward.title : '')}" placeholder="例如：肩頸按摩券 20 分鐘" class="journal-input text-sm" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-ink mb-1.5">兌換所需點數</label>
+            <input id="reward-cost-input" type="number" min="1" max="999" value="${reward ? reward.cost_points : 10}" class="journal-input text-sm font-bold" />
+          </div>
+          <div class="grid grid-cols-2 gap-3 pt-1">
+            <button type="button" onclick="closeModal()" class="btn-hand btn-outline py-2.5 text-sm">取消</button>
+            <button type="button" onclick="submitReward('${escapeHtml(rewardId || '')}', ${active})" class="btn-hand btn-accent py-2.5 text-sm">儲存獎勵</button>
+          </div>
+        </div>
+      `);
+    }
+
+    async function submitReward(rewardId, isActive) {
+      const title = document.getElementById('reward-title-input').value.trim();
+      const costPoints = parseInt(document.getElementById('reward-cost-input').value, 10);
+      if (!title || isNaN(costPoints) || costPoints <= 0) {
+        showToast('請輸入獎勵名稱與正整數點數', 'error');
+        return;
+      }
+      closeModal();
+      try {
+        await callApi('saveReward', {
+          editorId: state.session.user_id,
+          rewardId: rewardId || undefined,
+          title,
+          costPoints,
+          isActive
+        }, '正在儲存獎勵…');
+        showToast(rewardId ? '獎勵已更新' : '已新增獎勵項目');
+        await refreshDashboard(false);
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    async function toggleRewardActive(rewardId) {
+      const reward = state.dashboard.partnerRewards.find(r => r.reward_id === rewardId);
+      if (!reward) return;
+      const current = reward.is_active === true || reward.is_active === 'TRUE';
+      try {
+        await callApi('saveReward', {
+          editorId: state.session.user_id,
+          rewardId: reward.reward_id,
+          title: reward.title,
+          costPoints: reward.cost_points,
+          isActive: !current
+        }, '更新獎勵狀態…');
+        showToast(!current ? '已上架該獎勵' : '已下架該獎勵');
+        await refreshDashboard(false);
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    // 8. 設定 / 雲端 API 網址設定 / 切換身分彈窗
+    function openSettingsModal() {
+      const currentUrl = localStorage.getItem(STORAGE_KEYS.API_URL) || CONFIG_API_URL;
+      const loggedIn = Boolean(state.session);
+      openModal('手帳設定與連線', `
+        <div class="space-y-5">
+          <div>
+            <label class="block text-xs font-bold text-ink mb-1.5">Google Apps Script 網頁應用程式網址</label>
+            <input id="settings-api-url" type="url" value="${escapeHtml(currentUrl)}" placeholder="https://script.google.com/macros/s/.../exec" class="journal-input text-xs" />
+            <p class="text-[11px] text-inkLight mt-1.5 leading-relaxed">
+              貼上階段二取得的 API 網址即可連線至你們的 Google 試算表；若留空則維持「本機體驗模式」。
+            </p>
+            <button type="button" onclick="saveApiUrlSettings()" class="btn-hand btn-primary w-full py-2.5 text-sm mt-3">
+              儲存連線設定
+            </button>
+          </div>
+
+          ${!isLiveMode() ? `
+            <div class="pt-4 border-t border-dashed border-inkLight/40">
+              <button type="button" onclick="resetDemoData()" class="btn-hand btn-outline w-full py-2 text-xs text-inkLight">
+                重置體驗模式測試資料
+              </button>
+            </div>
+          ` : ''}
+
+          ${loggedIn ? `
+            <div class="pt-4 border-t border-dashed border-inkLight/40">
+              <button type="button" onclick="logoutUser()" class="btn-hand btn-outline-accent w-full py-2.5 text-sm">
+                登出並切換角色（男方 / 女方）
+              </button>
+            </div>
+          ` : ''}
+        </div>
+      `);
+    }
+
+    function saveApiUrlSettings() {
+      const val = document.getElementById('settings-api-url').value.trim();
+      if (val && !val.startsWith('https://')) {
+        showToast('請輸入完整的 https:// 網址', 'error');
+        return;
+      }
+      localStorage.setItem(STORAGE_KEYS.API_URL, val);
+      closeModal();
+      showToast(val ? '已切換為雲端連線模式' : '已切換回本機體驗模式');
+
+      if (state.session) {
+        // 切換資料庫來源後登出重驗 PIN，避免資料與帳號不同步
+        logoutUser(false);
+      } else {
+        updateLoginModeHints();
+      }
+    }
+
+    function resetDemoData() {
+      localStorage.removeItem(STORAGE_KEYS.DEMO_DB);
+      closeModal();
+      showToast('體驗模式資料已恢復預設值');
+      if (state.session) refreshDashboard(false);
+    }
+
+    function logoutUser(toast = true) {
+      state.session = null;
+      state.dashboard = null;
+      localStorage.removeItem(STORAGE_KEYS.SESSION);
+      closeModal();
+      showLoginScreen();
+      if (toast) showToast('已登出，請重新選擇角色');
+    }
+
+    // ================= 應用程式初始化 =================
+    window.addEventListener('DOMContentLoaded', () => {
+      // 支援在 PIN 輸入框按 Enter 直接登入
+      document.getElementById('login-pin').addEventListener('keydown', e => {
+        if (e.key === 'Enter') handleLoginSubmit();
+      });
+
+      try {
+        const savedSession = localStorage.getItem(STORAGE_KEYS.SESSION);
+        if (savedSession) {
+          state.session = JSON.parse(savedSession);
+          showMainApp();
+          return;
+        }
+      } catch (e) {}
+
+      showLoginScreen();
+    });
+  </script>
+</body>
+</html>
