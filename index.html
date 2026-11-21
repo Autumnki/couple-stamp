@@ -360,10 +360,10 @@
       </header>
 
       <!-- 主要內容捲動區（底部預留導覽列空間） -->
-      <main id="tab-content" class="flex-1 px-5 pt-5 pb-28 space-y-6">
+      <main id="tab-content" class="flex-1 px-5 pt-3 pb-28">
 
         <!-- ==================== TAB 1：今日打卡 ==================== -->
-        <section id="view-checkin" class="space-y-6">
+        <section id="view-checkin" class="space-y-4">
           <!-- 今日日期與摘要 -->
           <div class="flex items-end justify-between">
             <div>
@@ -377,26 +377,26 @@
           </div>
 
           <!-- 任務清單 -->
-          <div id="my-tasks-list" class="space-y-3.5"></div>
+          <div id="my-tasks-list" class="space-y-2.5"></div>
 
           <!-- 近期打卡紀錄 -->
           <div class="pt-2">
             <div class="flex items-center justify-between mb-3">
               <h4 class="text-base font-bold text-ink">近期打卡紀錄</h4>
             </div>
-            <div id="my-logs-list" class="space-y-3"></div>
+            <div id="my-logs-list" class="space-y-2.5"></div>
           </div>
         </section>
 
         <!-- ==================== TAB 2：集點卡與獎勵 ==================== -->
-        <section id="view-stamps" class="hidden space-y-6">
+        <section id="view-stamps" class="hidden space-y-4">
           <!-- 視覺化手帳集點卡（單一視覺焦點：僅已蓋章印章帶色彩） -->
-          <div class="relative pt-2">
-            <div class="journal-card p-5 pt-6 relative">
+          <div class="relative pt-0.5">
+            <div class="journal-card px-4 py-4 pt-5 relative">
               <!-- 極簡素色紙膠帶（克制原則：唯一裝飾元素） -->
               <div class="masking-tape" aria-hidden="true"></div>
 
-              <div class="flex items-baseline justify-between mb-5">
+              <div class="flex items-baseline justify-between mb-3.5">
                 <div>
                   <h3 class="text-lg font-bold text-ink">我的集點卡</h3>
                   <p id="stamp-card-page-label" class="text-xs text-inkLight mt-0.5">第 1 張集點卡</p>
@@ -425,7 +425,7 @@
               <h4 class="text-base font-bold text-ink">專屬獎勵兌換</h4>
               <span id="rewards-setter-hint" style="display: none;" class="text-xs text-inkLight">由另一半設定</span>
             </div>
-            <div id="my-rewards-list" class="space-y-3"></div>
+            <div id="my-rewards-list" class="space-y-2.5"></div>
           </div>
 
           <!-- 我的兌換券紀錄 -->
@@ -436,10 +436,9 @@
         </section>
 
         <!-- ==================== TAB 3：審核待辦 ==================== -->
-        <section id="view-review" class="hidden space-y-6">
+        <section id="view-review" class="hidden space-y-4">
           <div>
-            <h3 class="text-xl font-bold text-ink">審核另一半</h3>
-            <p id="review-subtitle" class="text-xs text-inkLight mt-0.5">確認對方的打卡紀錄並蓋上印章</p>
+            <p id="review-subtitle" class="text-xs text-inkLight">確認對方的打卡紀錄並蓋上印章</p>
           </div>
 
           <!-- Section A: 待審核打卡 -->
@@ -448,7 +447,7 @@
               <h4 class="text-sm font-bold text-ink">待審核打卡</h4>
               <span id="pending-review-count" class="text-xs font-bold text-terracotta">0 筆</span>
             </div>
-            <div id="pending-reviews-list" class="space-y-3.5"></div>
+            <div id="pending-reviews-list" class="space-y-2.5"></div>
           </div>
 
           <!-- Section B: 待兌現獎勵 -->
@@ -462,24 +461,21 @@
         </section>
 
         <!-- ==================== TAB 4：管理另一半 ==================== -->
-        <section id="view-manage" class="hidden space-y-6">
+        <section id="view-manage" class="hidden space-y-4">
           <!-- 監督者權限明確提示 -->
-          <div class="journal-card p-4 bg-card flex items-center justify-between">
-            <div>
-              <span class="text-[11px] font-bold text-matcha block">監督者專屬後台</span>
-              <h3 id="manage-banner-title" class="text-base font-bold text-ink mt-0.5">正在管理：另一半 的集章設定</h3>
-            </div>
-            <div class="text-right shrink-0 pl-2">
-              <span class="text-[11px] text-inkLight block">對方目前點數</span>
-              <span id="manage-partner-points" class="text-base font-bold text-terracotta">0 點</span>
+          <div class="journal-card px-4 py-3 bg-card">
+            <span class="text-[11px] font-bold text-matcha block">監督者專屬後台</span>
+            <div class="flex items-baseline gap-2 mt-1">
+              <span class="text-sm font-bold text-ink">對方目前點數</span>
+              <span id="manage-partner-points" class="text-lg font-bold text-terracotta">0 點</span>
             </div>
           </div>
 
           <!-- 驚喜加碼發放 -->
-          <div class="journal-card-alt p-5">
+          <div class="journal-card-alt px-4 py-3.5">
             <div class="flex items-center justify-between gap-3">
               <div>
-                <h4 class="text-base font-bold text-ink">發放特別貼紙</h4>
+                <h4 class="text-base font-bold text-ink">給予額外印章</h4>
                 <p class="text-xs text-inkLight mt-0.5">主動加碼點數，給對方一個日常小驚喜</p>
               </div>
               <button type="button" onclick="openBonusModal()" class="btn-hand btn-accent px-4 py-2.5 text-sm shrink-0">
@@ -496,7 +492,7 @@
                 ＋ 新增目標
               </button>
             </div>
-            <div id="partner-tasks-list" class="space-y-3"></div>
+            <div id="partner-tasks-list" class="space-y-2.5"></div>
           </div>
 
           <!-- 管理對方獎勵清單 -->
@@ -507,7 +503,7 @@
                 ＋ 新增獎勵
               </button>
             </div>
-            <div id="partner-rewards-list" class="space-y-3"></div>
+            <div id="partner-rewards-list" class="space-y-2.5"></div>
           </div>
         </section>
 
@@ -1127,7 +1123,7 @@
           </div>`;
       } else {
         tasksEl.innerHTML = d.myTasks.map(t => `
-          <div class="journal-card p-5 flex items-center justify-between gap-3">
+          <div class="journal-card px-4 py-3 flex items-center justify-between gap-3">
             <div class="min-w-0">
               <div class="flex items-center gap-2 flex-wrap">
                 <span class="text-base font-bold text-ink break-words">${escapeHtml(t.title)}</span>
@@ -1139,7 +1135,7 @@
             <button
               type="button"
               ${t.checked_today ? 'disabled' : `onclick="openCheckinModal('${escapeHtml(t.task_id)}')"`}
-              class="btn-hand ${t.checked_today ? '' : 'btn-primary'} px-4 py-2.5 text-sm shrink-0"
+              class="btn-hand ${t.checked_today ? '' : 'btn-primary'} px-4 py-2 text-sm shrink-0"
             >
               ${t.checked_today ? '今日已打卡' : '打卡'}
             </button>
@@ -1157,7 +1153,7 @@
           if (l.status === '待審核') badgeClass = 'bg-terracottaSoft/25 text-terracotta border-terracotta/50';
 
           return `
-            <div class="journal-card-alt px-4 py-3.5">
+            <div class="journal-card-alt px-4 py-2.5">
               <div class="flex items-start justify-between gap-2">
                 <div class="min-w-0">
                   <div class="flex items-center gap-2 flex-wrap">
@@ -1243,7 +1239,7 @@
         rewardsEl.innerHTML = d.myRewards.map(r => {
           const canRedeem = pts >= Number(r.cost_points);
           return `
-            <div class="journal-card p-4 flex items-center justify-between gap-3">
+            <div class="journal-card px-4 py-3 flex items-center justify-between gap-3">
               <div class="min-w-0">
                 <p class="text-base font-bold text-ink break-words">${escapeHtml(r.title)}</p>
                 <p class="text-xs font-bold text-terracotta mt-1">需要 ${r.cost_points} 點</p>
@@ -1305,7 +1301,7 @@
           </div>`;
       } else {
         revEl.innerHTML = d.pendingReviews.map(l => `
-          <div class="journal-card p-5 space-y-3.5">
+          <div class="journal-card px-4 py-3.5 space-y-2.5">
             <div class="flex items-start justify-between gap-2">
               <div>
                 <span class="text-xs font-bold text-inkLight">${escapeHtml(d.partner.display_name)} 提交於 ${formatShortTime(l.checkin_time)}</span>
@@ -1317,11 +1313,11 @@
             </div>
             ${l.note ? `<div class="bg-paper border border-dashed border-inkLight/50 rounded-lg px-3.5 py-2.5 text-xs text-ink leading-relaxed">「${escapeHtml(l.note)}」</div>` : ''}
             <div class="grid grid-cols-2 gap-3 pt-1">
-              <button type="button" onclick="openRejectModal('${escapeHtml(l.log_id)}', '${escapeHtml(l.task_title)}')" class="btn-hand btn-outline-accent py-2.5 text-sm">
+              <button type="button" onclick="openRejectModal('${escapeHtml(l.log_id)}', '${escapeHtml(l.task_title)}')" class="btn-hand btn-outline-accent py-2 text-sm">
                 退回
               </button>
-              <button type="button" onclick="submitReview('${escapeHtml(l.log_id)}', 'approve', '', ${l.points})" class="btn-hand btn-primary py-2.5 text-sm">
-                通過蓋章
+              <button type="button" onclick="submitReview('${escapeHtml(l.log_id)}', 'approve', '', ${l.points})" class="btn-hand btn-primary py-2 text-sm">
+                蓋章
               </button>
             </div>
           </div>
@@ -1348,7 +1344,6 @@
 
     // ---------- TAB 4 渲染：管理另一半 ----------
     function renderManageTab(d) {
-      document.getElementById('manage-banner-title').textContent = `正在管理：${d.partner.display_name} 的集章設定`;
       document.getElementById('manage-partner-points').textContent = `${d.partner.current_points} 點`;
 
       // 對方任務管理
@@ -1359,13 +1354,13 @@
         pTasksEl.innerHTML = d.partnerTasks.map(t => {
           const active = t.is_active === true || t.is_active === 'TRUE';
           return `
-            <div class="journal-card p-4 flex items-center justify-between gap-3 ${active ? '' : 'opacity-65'}">
+            <div class="journal-card px-4 py-3 flex items-center justify-between gap-3 ${active ? '' : 'opacity-65'}">
               <div class="min-w-0">
                 <div class="flex items-center gap-2 flex-wrap">
                   <span class="text-sm font-bold text-ink">${escapeHtml(t.title)}</span>
                   <span class="text-xs font-bold text-matcha">+${t.points} 點</span>
                 </div>
-                <span class="text-[11px] text-inkLight">${active ? '顯示於對方打卡清單' : '已暫停停用'}</span>
+                ${active ? '' : '<span class="text-[11px] text-inkLight">已暫停停用</span>'}
               </div>
               <div class="flex items-center gap-2.5 shrink-0">
                 <button type="button" onclick="openTaskModal('${escapeHtml(t.task_id)}')" class="btn-hand btn-outline px-2.5 py-1.5 text-xs">
@@ -1388,7 +1383,7 @@
         pRewardsEl.innerHTML = d.partnerRewards.map(r => {
           const active = r.is_active === true || r.is_active === 'TRUE';
           return `
-            <div class="journal-card p-4 flex items-center justify-between gap-3 ${active ? '' : 'opacity-65'}">
+            <div class="journal-card px-4 py-3 flex items-center justify-between gap-3 ${active ? '' : 'opacity-65'}">
               <div class="min-w-0">
                 <div class="flex items-center gap-2 flex-wrap">
                   <span class="text-sm font-bold text-ink">${escapeHtml(r.title)}</span>
@@ -1441,11 +1436,11 @@
           </div>
           <div>
             <label class="block text-xs font-bold text-ink mb-1.5">文字備註（選填）</label>
-            <textarea id="checkin-note-input" rows="3" placeholder="選填備註，例如：慢跑 3 公里、今天流超多汗！" class="journal-input text-sm resize-none"></textarea>
+            <textarea id="checkin-note-input" rows="3" placeholder="例如：慢跑3公里、完成某件事情。" class="journal-input text-sm resize-none"></textarea>
           </div>
           <div class="grid grid-cols-2 gap-3 pt-1">
             <button type="button" onclick="closeModal()" class="btn-hand btn-outline py-2.5 text-sm">取消</button>
-            <button type="button" onclick="submitCheckin('${escapeHtml(taskId)}')" class="btn-hand btn-primary py-2.5 text-sm">確認送出</button>
+            <button type="button" onclick="submitCheckin('${escapeHtml(taskId)}')" class="btn-hand btn-primary py-2 text-sm">確認送出</button>
           </div>
         </div>
       `);
@@ -1543,10 +1538,10 @@
       }
     }
 
-    // 5. 發放特別貼紙 / 加碼點數
+    // 5. 給予額外印章 / 加碼點數
     function openBonusModal() {
       const partnerName = state.dashboard.partner.display_name;
-      openModal(`發放特別貼紙給 ${partnerName}`, `
+      openModal(`給予額外印章給 ${partnerName}`, `
         <div class="space-y-4">
           <div>
             <label class="block text-xs font-bold text-ink mb-1.5">加碼事由</label>
@@ -1578,8 +1573,8 @@
       }
       closeModal();
       try {
-        await callApi('giveBonus', { giverId: state.session.user_id, title, points, note }, '正在發放特別貼紙…');
-        showToast(`已發放 +${points} 點特別貼紙！`);
+        await callApi('giveBonus', { giverId: state.session.user_id, title, points, note }, '正在給予額外印章…');
+        showToast(`已發放 +${points} 點額外印章！`);
         await refreshDashboard(false);
       } catch (err) {
         showToast(err.message, 'error');
@@ -1602,7 +1597,7 @@
           </div>
           <div class="grid grid-cols-2 gap-3 pt-1">
             <button type="button" onclick="closeModal()" class="btn-hand btn-outline py-2.5 text-sm">取消</button>
-            <button type="button" onclick="submitTask('${escapeHtml(taskId || '')}', ${active})" class="btn-hand btn-primary py-2.5 text-sm">儲存目標</button>
+            <button type="button" onclick="submitTask('${escapeHtml(taskId || '')}', ${active})" class="btn-hand btn-primary py-2 text-sm">儲存目標</button>
           </div>
         </div>
       `);
