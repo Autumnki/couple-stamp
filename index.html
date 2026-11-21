@@ -643,7 +643,7 @@
 
     // ================= 工具函式 =================
     function getApiUrl() {
-      const saved = (localStorage.getItem(STORAGE_KEYS.API_URL) || https://script.google.com/macros/s/AKfycbwlsdjKxCTjCA4gdyfPM6AH8r_3SluDONjWmY5Q28Isek8ObsYndwfzm-nSh8JIFkw_Sw/exec).trim();
+      const saved = (localStorage.getItem(STORAGE_KEYS.API_URL) || 'https://script.google.com/macros/s/AKfycbwlsdjKxCTjCA4gdyfPM6AH8r_3SluDONjWmY5Q28Isek8ObsYndwfzm-nSh8JIFkw_Sw/exec').trim();
       return saved || CONFIG_API_URL.trim();
     }
 
