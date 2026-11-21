@@ -303,11 +303,9 @@
         <div class="grid grid-cols-2 gap-3 mb-6">
           <button type="button" id="role-btn-M" onclick="selectLoginRole('M')" class="btn-hand py-3.5 px-3 bg-card text-ink flex-col gap-1">
             <span class="text-base">男友</span>
-            <span class="text-xs font-normal text-inkLight">角色 M</span>
           </button>
           <button type="button" id="role-btn-F" onclick="selectLoginRole('F')" class="btn-hand py-3.5 px-3 bg-card text-ink flex-col gap-1">
             <span class="text-base">女友</span>
-            <span class="text-xs font-normal text-inkLight">角色 F</span>
           </button>
         </div>
 
@@ -330,9 +328,6 @@
 
         <div class="mt-5 pt-4 border-t border-dashed border-inkLight/40 flex items-center justify-between text-xs text-inkLight">
           <span id="login-mode-label">目前為本機體驗模式</span>
-          <button type="button" onclick="openSettingsModal()" class="underline font-bold text-ink hover:text-matcha">
-            設定雲端連線
-          </button>
         </div>
       </div>
     </main>
@@ -1027,7 +1022,7 @@
     function updateLoginModeHints() {
       const live = isLiveMode();
       document.getElementById('login-demo-hint').classList.toggle('hidden', live);
-      document.getElementById('login-mode-label').textContent = live ? '已連結 Google 試算表雲端' : '目前為本機體驗模式';
+      document.getElementById('login-mode-label').textContent = live ? '' : '目前為本機體驗模式';
     }
 
     // ================= 畫面切換與儀表板渲染 =================
